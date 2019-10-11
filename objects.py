@@ -1,0 +1,1 @@
+""" Modulo com as funcoes de criacao de objetos"""
