@@ -12,6 +12,27 @@ def create_hud(shape, color):
     hud.penup()
     return hud
 
+
+def create_tank(posx, posy, color, frame):
+
+    tanque = open(frame, "r")
+    altura = len(tanque.readlines())
+
+    x = posx
+    y = posy
+
+    tanque = open(frame, "r")
+    for i in range(altura):
+        largura = tanque.readline()
+        for j in range(len(largura)):
+            if largura[j] == '1':
+                pixel_tanque = create_hud("square", color)
+                pixel_tanque.turtlesize(0.3, 0.3)
+                pixel_tanque.goto(x,y)
+            x += 3.5
+        x = posx
+        y -= 7
+
 # vetor com todos os mapas 
 MapVector = ["mapa.txt", "mapa2.txt"]
 
@@ -30,7 +51,6 @@ screen.setup(720, 585)
 screen.tracer(0)
 
 # dimensões da arena ( L -> 68, A -> 27)
-
 # desenhando as paredes na tela
 chosen_map = random_map(MapVector)
 mapa = open(chosen_map, "r")
@@ -49,54 +69,21 @@ for i in range(alturaM):
             pixel = create_hud("square", "yellow")
             pixel.turtlesize(1, 1)
             pixel.goto(x,y)
-            pixel._tracer(5)
         x += 10.5
     x = posx_parede
     y -= 21
 
-# tentativa 1 - desenhando o tanque verde
-tanque1 = open("tanque1.txt", "r")
-alturat1 = len(tanque1.readlines())
+# "lembrando que se alguem achar uma forma melhor de criar
+# esses tanques pode colocar ai, pq ta complicado de movimentar isso"
 
-posx_tanque1 = -60
-posy_tanque1 = 0
-
-x = posx_tanque1
-y = posy_tanque1
-tanque1 = open("tanque1.txt", "r")
-for i in range(alturat1):
-    largurat1 = tanque1.readline()
-    for j in range(len(largurat1)):
-        if largurat1[j] == '1':
-            pixel_tanque1 = create_hud("square", "green")
-            pixel_tanque1.turtlesize(0.3, 0.3)
-            pixel_tanque1.goto(x,y)
-            pixel_tanque1._tracer(5)
-        x += 3.5
-    x = posx_tanque1
-    y -= 7
-
-# tentativa 1 - desenhando o tanque vermelho
-tanque2 = open("tanque1.txt", "r")
-alturat2 = len(tanque2.readlines())
-
-posx_tanque2 = 0
-posy_tanque2 = 0
-
-x = posx_tanque2
-y = posy_tanque2
-tanque2 = open("tanque1.txt", "r")
-for i in range(alturat2):
-    largurat2 = tanque2.readline()
-    for j in range(len(largurat2)):
-        if largurat2[j] == '1':
-            pixel_tanque2 = create_hud("square", "red")
-            pixel_tanque2.turtlesize(0.3, 0.3)
-            pixel_tanque2.goto(x,y)
-            pixel_tanque2._tracer(5)
-        x += 3.5
-    x = posx_tanque2
-    y -= 7
+# desenhando o tanque verde
+create_tank(0, 60, "green", "tanque_up.txt")
+create_tank(0, 0, "green", "tanque_up_right.txt")
+create_tank(0, -60, "green", "tanque_right.txt")
+# desenhando o tanque vermelho
+create_tank(-60, 60, "red", "tanque_up.txt")
+create_tank(-60, 0, "red", "tanque_up_right.txt")
+create_tank(-60, -60, "red", "tanque_right.txt")
 
 while True:
     screen.update()
