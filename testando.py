@@ -4,6 +4,16 @@ import turtle
 import time
 import os
 
+import objects
+
+# variaveis da posicao para o score do tanque verde
+posx_score_green = -290
+posy_score_green = 280
+
+# variaveis da posicao para o score do tanque vermelho
+posx_score_red = 250
+posy_score_red = 280
+
 def create_hud(shape, color):
     hud = turtle.Turtle()
     hud.speed(0)
@@ -204,9 +214,19 @@ screen.listen()
 screen.onkeypress(rotate_left_green, 'a')
 screen.onkeypress(forward_green, 'w')
 screen.onkeypress(rotate_right_green, 'd')
+
+# controles player vermelho
 screen.onkeypress(rotate_left_red, 'Left')
 screen.onkeypress(forward_red, 'Up')
 screen.onkeypress(rotate_right_red, 'Right')
+
+# cria o score inicial para o tanque verde
+objects.create_score(posx_score_green, posy_score_green,
+                     "green", "Scores/0.txt")
+
+# cria o score inicial para o tanque vermelho
+objects.create_score(posx_score_red, posy_score_red,
+                     "red", "Scores/0.txt")
 
 while True:
     screen.update()
