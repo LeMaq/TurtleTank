@@ -176,10 +176,10 @@ for i in range(alturaM):
     y -= 21
 
 # posição inicial do tanque verde
-pos_green_x = -80
+pos_green_x = -310
 pos_green_y = 0
 # posição inicial do tanque vermelho
-pos_red_x = 80
+pos_red_x = 260
 pos_red_y = 0
 # indice do sprite inicial do tanque verde
 ind_green = 0
