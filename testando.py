@@ -30,7 +30,7 @@ posy_parede = 275
 
 x = posx_parede
 y = posy_parede
-mapa = open("mapa.txt", "r")
+mapa = open("mapa2.txt", "r")
 for i in range(alturaM):
     larguraM = mapa.readline()
     for j in range(len(larguraM)):
