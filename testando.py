@@ -12,6 +12,16 @@ def create_hud(shape, color):
     hud.penup()
     return hud
 
+# vetor com todos os mapas 
+MapVector = ["mapa.txt", "mapa2.txt"]
+
+
+#Escolhendo o mapa dentro do vetor
+def random_map(x):
+    y = random.randint(0,len(x)-1)
+    return x[y] 
+
+
 # Criando a tela.
 screen = turtle.Screen()
 screen.title(" Atari Combat ")
@@ -22,7 +32,8 @@ screen.tracer(0)
 # dimensões da arena ( L -> 68, A -> 27)
 
 # desenhando as paredes na tela
-mapa = open("mapa.txt", "r")
+chosen_map = random_map(MapVector)
+mapa = open(chosen_map, "r")
 alturaM = len(mapa.readlines())
 
 posx_parede = -348
@@ -30,7 +41,7 @@ posy_parede = 275
 
 x = posx_parede
 y = posy_parede
-mapa = open("mapa2.txt", "r")
+mapa = open(chosen_map, "r")
 for i in range(alturaM):
     larguraM = mapa.readline()
     for j in range(len(larguraM)):
