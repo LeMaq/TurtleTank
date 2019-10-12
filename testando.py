@@ -49,7 +49,7 @@ def create_tank(posx, posy, color, sprite):
     y = posy
 
     tanque = open(sprite, "r")
-    for i in range(altura):
+    for _i in range(altura):
         largura = tanque.readline()
         line = []
         for j in range(len(largura)):
@@ -228,5 +228,20 @@ objects.create_score(posx_score_green, posy_score_green,
 objects.create_score(posx_score_red, posy_score_red,
                      "red", "Scores/0.txt")
 
+score_red = 0 # pontuacao do tanque vermelho
+score_green = 0 # pontuacao do tanque verde 
 while True:
+    
+    # Se o tanque vermelho atingir o tanque verde:
+        #objects.change_score(posx_score_red, posy_score_red, "red", score_red)
+        # score_red += 1
+    
+    # Se o tanque verde atingir o tanque vermelho:
+        #objects.change_score(posx_score_green, posy_score_green, "green", score_green)
+        # score_green += 1
+       
+    # Se score_red == 5 or score_green == 5:
+        #fim de jogo (sair do while)
     screen.update()
+    
+    
