@@ -1,5 +1,5 @@
-
 from Game_modules import objects
+from math import radians, sin, cos
 import random
 import sys
 import turtle
@@ -35,14 +35,22 @@ def create_hud(shape, color):
 
 
 # um dicionario com o angulo em graus e o respectivo sprites
-sprite_tank = {0: "Sprites_tanks/tanque_right.txt",
-               45: "Sprites_tanks/tanque_up_right.txt",
-               90: "Sprites_tanks/tanque_up.txt",
-               135: "Sprites_tanks/tanque_up_left.txt",
-               180: "Sprites_tanks/tanque_left.txt",
-               225: "Sprites_tanks/tanque_dow_left.txt",
-               270: "Sprites_tanks/tanque_dow.txt",
-               315: "Sprites_tanks/tanque_dow_right.txt"}
+sprite_tank = {0 :"Sprites_tanks/tank_0.txt",
+               22.5 :"Sprites_tanks/tank_22.5.txt",
+               45 :"Sprites_tanks/tank_45.txt",
+               67.5 :"Sprites_tanks/tank_67.5.txt",
+               90 :"Sprites_tanks/tank_90.txt",
+               112.5 :"Sprites_tanks/tank_112.5.txt",
+               135 :"Sprites_tanks/tank_135.txt",
+               157.5 :"Sprites_tanks/tank_157.5.txt",
+               180 :"Sprites_tanks/tank_180.txt",
+               202.5 :"Sprites_tanks/tank_202.5.txt",
+               225 :"Sprites_tanks/tank_225.txt",
+               247.5 :"Sprites_tanks/tank_247.5.txt",
+               270 :"Sprites_tanks/tank_270.txt",
+               292.5 :"Sprites_tanks/tank_292.5.txt",
+               315 :"Sprites_tanks/tank_315.txt",
+               337.5 :"Sprites_tanks/tank_337.5.txt"}
 
 # vetor com todos os mapas
 MapVector = ["Maps/mapa.txt", "Maps/mapa2.txt"]
@@ -108,33 +116,17 @@ def move_tank(color, sprite):
     invisible_tank(color)
     x = 0
     y = 0
-    if sprite == "Sprites_tanks/tanque_up.txt":
-        y += 30
-    elif sprite == "Sprites_tanks/tanque_dow.txt":
-        y -= 30
-    elif sprite == "Sprites_tanks/tanque_right.txt":
-        x += 30
-    elif sprite == "Sprites_tanks/tanque_left.txt":
-        x -= 30
-    elif sprite == "Sprites_tanks/tanque_up_right.txt":
-        x += 15
-        y += 15
-    elif sprite == "Sprites_tanks/tanque_up_left.txt":
-        x -= 15
-        y += 15
-    elif sprite == "Sprites_tanks/tanque_dow_left.txt":
-        x -= 15
-        y -= 15
-    elif sprite == "Sprites_tanks/tanque_dow_right.txt":
-        x += 15
-        y -= 15
+    for i in sprite_tank:
+        if sprite == sprite_tank[i]:
+            x = cos(radians(i))*20
+            y = sin(radians(i))*20
     if color == "green":
-        pos_green_x = pos_green_x + x
-        pos_green_y = pos_green_y + y
+        pos_green_x += x
+        pos_green_y += y
         create_tank(pos_green_x, pos_green_y, color, sprite)
     elif color == "red":
-        pos_red_x = pos_red_x + x
-        pos_red_y = pos_red_y + y
+        pos_red_x += x
+        pos_red_y += y
         create_tank(pos_red_x, pos_red_y, color, sprite)
 
 
@@ -143,13 +135,13 @@ def rotate_right(color):
     global ind_green, ind_red
     invisible_tank(color)
     if color == "green":
-        ind_green -= 45
-        if ind_green == -45:
-            ind_green = 315
+        ind_green -= 22.5
+        if ind_green == -22.5:
+            ind_green = 337.5
         create_tank(pos_green_x, pos_green_y, color, sprite_tank[ind_green])
     if color == "red":
-        ind_red -= 45
-        if ind_red == -45:
+        ind_red -= 22.5
+        if ind_red == -22.5:
             ind_red = 315
         create_tank(pos_red_x, pos_red_y, color, sprite_tank[ind_red])
 
@@ -158,12 +150,12 @@ def rotate_left(color):
     global ind_green, ind_red
     invisible_tank(color)
     if color == "green":
-        ind_green += 45
+        ind_green += 22.5
         if ind_green == 360:
             ind_green = 0
         create_tank(pos_green_x, pos_green_y, color, sprite_tank[ind_green])
     if color == "red":
-        ind_red += 45
+        ind_red += 22.5
         if ind_red == 360:
             ind_red = 0
         create_tank(pos_red_x, pos_red_y, color, sprite_tank[ind_red])
