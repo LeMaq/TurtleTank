@@ -7,6 +7,8 @@ import time
 import os
 
 
+pause = False
+
 # variaveis da posicao para o score do tanque verde
 posx_score_green = -290
 posy_score_green = 280
@@ -14,6 +16,13 @@ posy_score_green = 280
 # variaveis da posicao para o score do tanque vermelho
 posx_score_red = 250
 posy_score_red = 280
+
+def game_pause():
+    global pause
+    if pause is False:
+        pause = True
+    else:
+        pause = False
 
 
 def create_hud(shape, color):
@@ -206,15 +215,21 @@ create_tank(pos_green_x, pos_green_y, "green", sprite_tank[ind_green])
 
 # Movimentos do tanque verde
 def forward_green():
-    move_tank("green", sprite_tank[ind_green])
+    # O tanque verde fica parado enquanto pause for True
+    if pause is False:
+        move_tank("green", sprite_tank[ind_green])
 
 
 def rotate_left_green():
-    rotate_left("green")
+    # O tanque verde fica parado enquanto pause for True
+    if pause is False:
+        rotate_left("green")
 
 
 def rotate_right_green():
-    rotate_right("green")
+    # O tanque verde fica parado enquanto pause for True
+    if pause is False:
+        rotate_right("green")
 
 
 # criando o tanque vermelho
@@ -223,15 +238,21 @@ create_tank(pos_red_x, pos_red_y, "red", sprite_tank[ind_red])
 
 # Movimentos do tanque vermelho
 def forward_red():
-    move_tank("red", sprite_tank[ind_red])
+    # O tanque vermelho fica parado enquanto pause for True
+    if pause is False:
+        move_tank("red", sprite_tank[ind_red])
 
 
 def rotate_left_red():
-    rotate_left("red")
+    # O tanque vermelho fica parado enquanto pause for True
+    if pause is False:
+        rotate_left("red")
 
 
 def rotate_right_red():
-    rotate_right("red")
+    # O tanque vermelho fica parado enquanto pause for True
+    if pause is False:
+        rotate_right("red")
 
 
 # contorles player verde
@@ -244,6 +265,9 @@ screen.onkeypress(rotate_right_green, 'd')
 screen.onkeypress(rotate_left_red, 'Left')
 screen.onkeypress(forward_red, 'Up')
 screen.onkeypress(rotate_right_red, 'Right')
+
+# pause
+screen.onkeypress(game_pause, 'p')
 
 # cria o score inicial para o tanque verde
 objects.create_score(posx_score_green, posy_score_green,
