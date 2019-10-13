@@ -230,6 +230,52 @@ objects.create_score(posx_score_red, posy_score_red,
 
 score_red = 0 # pontuacao do tanque vermelho
 score_green = 0 # pontuacao do tanque verde 
+
+def wall_green(x, y, sprite):
+    if x - 20 <= -360:
+        x = -340
+        invisible_tank("green")
+        create_tank(x, y, "green", sprite_tank[ind_green])
+    elif x + 20 >= 312:
+        x = 292
+        invisible_tank("green")
+        create_tank(x, y, "green", sprite_tank[ind_green])
+        
+    elif y - 20 <= -232:
+        y = -212
+        invisible_tank("green")
+        create_tank(x, y, "green", sprite_tank[ind_green])
+    elif y + 20 >= 222:
+        y = 202
+        invisible_tank("green")
+        create_tank(x, y, "green", sprite_tank[ind_green])
+        
+
+def wall_red(x, y):
+    if x - 20 <= -360:
+        x = -340
+        invisible_tank("red")
+        create_tank(x, y, "red", sprite_tank[ind_red])
+    elif x + 20 >= 312:
+        x = 292
+        invisible_tank("red")
+        create_tank(x, y, "red", sprite_tank[ind_red])
+        
+    elif y - 20 <= -232:
+        y = -212
+        invisible_tank("red")
+        create_tank(x, y, "red", sprite_tank[ind_red])
+    elif y + 20 >= 222:
+        y = 202
+        invisible_tank("red")
+        create_tank(x, y, "red", sprite_tank[ind_red])
+
+def wall_collide(color):
+    if color == "green":
+        wall_green(pos_green_x, pos_green_y, sprite_tank[ind_green])
+    elif color == "red":
+        wall_red(pos_red_x, pos_red_y)
+
 while True:
     
     # Se o tanque vermelho atingir o tanque verde:
@@ -243,5 +289,9 @@ while True:
     # Se score_red == 5 or score_green == 5:
         #fim de jogo (sair do while)
     screen.update()
+
+    # colisão paredes (ainda tá meio cagado, mas não toca não que eu vou ajeitar)
+    wall_collide("green")
+    wall_collide("red")
     
     
