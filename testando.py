@@ -23,12 +23,12 @@ def create_hud(shape, color):
     return hud
 
 # um dicionario com o angulo em graus e o respectivo sprites
-sprite_tank = {0 :"tanque_right.txt", 45 :"tanque_up_right.txt", 90 :"tanque_up.txt",
-               135 :"tanque_up_left.txt", 180 :"tanque_left.txt", 225 :"tanque_dow_left.txt",
-               270 :"tanque_dow.txt", 315 :"tanque_dow_right.txt"}
+sprite_tank = {0 :"sprites_tank/tanque_right.txt", 45 :"sprites_tank/tanque_up_right.txt", 90 :"sprites_tank/tanque_up.txt",
+               135 :"sprites_tank/tanque_up_left.txt", 180 :"sprites_tank/tanque_left.txt", 225 :"sprites_tank/tanque_dow_left.txt",
+               270 :"sprites_tank/tanque_dow.txt", 315 :"sprites_tank/tanque_dow_right.txt"}
 
 # vetor com todos os mapas 
-MapVector = ["mapa.txt", "mapa2.txt"]
+MapVector = ["mapas/mapa.txt", "mapas/mapa2.txt"]
 
 
 #Escolhendo o mapa dentro do vetor
@@ -55,12 +55,12 @@ def create_tank(posx, posy, color, sprite):
         for j in range(len(largura)):
             if largura[j] == '1':
                 pixel_tanque = create_hud("square", color)
-                pixel_tanque.turtlesize(0.3, 0.3)
+                pixel_tanque.turtlesize(0.2, 0.2)
                 pixel_tanque.goto(x,y)
                 line.append(pixel_tanque)
-            x += 3.5
+            x += 2.5
         x = posx
-        y -= 7
+        y -= 5
         if color == "green":
             tank_green.append(line)
         else:
@@ -86,24 +86,24 @@ def move_tank(color, sprite):
     invisible_tank(color)
     x = 0
     y = 0
-    if sprite == "tanque_up.txt":
+    if sprite == "sprites_tank/tanque_up.txt":
         y += 30
-    elif sprite == "tanque_dow.txt":
+    elif sprite == "sprites_tank/tanque_dow.txt":
         y -= 30
-    elif sprite == "tanque_right.txt":
+    elif sprite == "sprites_tank/tanque_right.txt":
         x += 30
-    elif sprite == "tanque_left.txt":
+    elif sprite == "sprites_tank/tanque_left.txt":
         x -= 30
-    elif sprite == "tanque_up_right.txt":
+    elif sprite == "sprites_tank/tanque_up_right.txt":
         x += 15
         y += 15
-    elif sprite == "tanque_up_left.txt":
+    elif sprite == "sprites_tank/tanque_up_left.txt":
         x -= 15
         y += 15
-    elif sprite == "tanque_dow_left.txt":
+    elif sprite == "sprites_tank/tanque_dow_left.txt":
         x -= 15
         y -= 15
-    elif sprite == "tanque_dow_right.txt":
+    elif sprite == "sprites_tank/tanque_dow_right.txt":
         x += 15
         y -= 15
     if color == "green":
@@ -177,10 +177,10 @@ for i in range(alturaM):
 
 # posição inicial do tanque verde
 pos_green_x = -310
-pos_green_y = 0
+pos_green_y = -15
 # posição inicial do tanque vermelho
 pos_red_x = 260
-pos_red_y = 0
+pos_red_y = -15
 # indice do sprite inicial do tanque verde
 ind_green = 0
 # indice do sprite inicial do tanque vermelho
