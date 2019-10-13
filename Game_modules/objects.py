@@ -2,6 +2,7 @@
 
 import turtle
 
+
 def create_hud(shape, color):
     hud = turtle.Turtle()
     hud.speed(0)
@@ -10,8 +11,10 @@ def create_hud(shape, color):
     hud.penup()
     return hud
 
+
 score_red = []
 score_green = []
+
 
 def create_score(posx, posy, color, sprite):
 
@@ -29,7 +32,7 @@ def create_score(posx, posy, color, sprite):
             if largura[j] == '1':
                 pixel_score = create_hud("square", color)
                 pixel_score.turtlesize(0.3, 0.3)
-                pixel_score.goto(x,y)
+                pixel_score.goto(x, y)
                 line.append(pixel_score)
             x += 3.5
         x = posx
@@ -53,16 +56,12 @@ def invisible_score(color):
                 score_red[i][j].hideturtle()
         score_red.clear()
 
-# lista dos arquivos txt dos scores para facilitar a mudanca de um score
-'''scores = ['Scores/0.txt', 'Scores/1.txt',
-          'Scores/2.txt', 'Scores/3.txt',
-          'Scores/4.txt', 'Scores/5.txt']
-'''
+
 def change_score(posx, posy, color, actual_score):
     invisible_score(color)
     if actual_score == 0:
         create_score(posx, posy, color, 'Scores/1.txt')
-    elif actual_score == 1: 
+    elif actual_score == 1:
         create_score(posx, posy, color, 'Scores/2.txt')
     elif actual_score == 2:
         create_score(posx, posy, color, 'Scores/3.txt')
@@ -70,5 +69,3 @@ def change_score(posx, posy, color, actual_score):
         create_score(posx, posy, color, 'Scores/4.txt')
     elif actual_score == 4:
         create_score(posx, posy, color, 'Scores/5.txt')
-    
-
