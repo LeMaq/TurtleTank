@@ -184,8 +184,10 @@ def rotate_right_green():
 
 
 def move_bullet_green():
-    create_bullet(pos_green_x, pos_green_y, "green", sprite_tank[ind_green])
-    move_bullet("green", sprite_tank[ind_green])
+    # O tanque nao consegue atirar se pause for True
+    if pause is False:
+        create_bullet(pos_green_x, pos_green_y, "green", sprite_tank[ind_green])
+        move_bullet("green", sprite_tank[ind_green])
 
 
 # Movimentos do tanque vermelho
@@ -208,8 +210,10 @@ def rotate_right_red():
 
 
 def move_bullet_red():
-    create_bullet(pos_red_x, pos_red_y, "red", sprite_tank[ind_red])
-    move_bullet("red", sprite_tank[ind_red])
+    # O tanque nao consegue atirar se pause for True
+    if pause is False:
+        create_bullet(pos_red_x, pos_red_y, "red", sprite_tank[ind_red])
+        move_bullet("red", sprite_tank[ind_red])
 
 
 def wall_green(x, y, sprite):
@@ -395,23 +399,26 @@ while True:
     wall_collide("green")
     wall_collide("red")
 
+    # As balas tem que ficar paradas se pause for True
+    if pause is False:
     # aqui faço a movimentação de todas as balas
-    for i in range(len(bullets_list)):
-        bullets_list[i].sety(bullets_list[i].ycor() + bullets_list[i].dy)
-        bullets_list[i].setx(bullets_list[i].xcor() + bullets_list[i].dx)
+        for i in range(len(bullets_list)):
+            bullets_list[i].sety(bullets_list[i].ycor() + bullets_list[i].dy)
+            bullets_list[i].setx(bullets_list[i].xcor() + bullets_list[i].dx)
 
-        # Colisão com a parede superior
-        if(bullets_list[i].ycor() > 290):
-            bullets_list[i].hideturtle()
+        
+            # Colisão com a parede superior
+            if(bullets_list[i].ycor() > 210):
+                bullets_list[i].hideturtle()
 
-        # Colisão com a parede inferior
-        if(bullets_list[i].ycor() < -290):
-            bullets_list[i].hideturtle()
+            # Colisão com a parede inferior
+            if(bullets_list[i].ycor() < -270):
+                bullets_list[i].hideturtle()
 
-        # Colisão com a parede direita
-        if (bullets_list[i].xcor() > 350):
-            bullets_list[i].hideturtle()
+            # Colisão com a parede direita
+            if (bullets_list[i].xcor() > 340):
+                bullets_list[i].hideturtle()
 
-        # Colisão com a parede esquerda
-        if(bullets_list[i].xcor() < -350):
-            bullets_list[i].hideturtle()
+            # Colisão com a parede esquerda
+            if(bullets_list[i].xcor() < -345):
+                bullets_list[i].hideturtle()
