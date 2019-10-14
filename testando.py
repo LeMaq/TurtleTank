@@ -1,10 +1,26 @@
-from Game_modules import objects
+from Game_modules import objects, physics
 from math import radians, sin, cos
 import random
 import sys
 import turtle
 import time
 import os
+
+# posição inicial do tanque verde
+pos_green_x = -310
+pos_green_y = -15
+
+# posição inicial do tanque vermelho
+pos_red_x = 260
+pos_red_y = -15
+
+# variaveis para ir guardando a posicao do tanque green
+actual_pos_x_green = pos_green_x
+actual_pos_y_green = pos_green_y
+
+# variaveis para ir guardando a posicao do tanque red
+actual_pos_x_red = pos_red_x
+actual_pos_y_red = pos_red_y
 
 
 def game_pause():
@@ -116,6 +132,8 @@ def invisible_tank(color):
 def move_tank(color, sprite):
     global pos_green_x, pos_green_y
     global pos_red_x, pos_red_y
+    global actual_pos_x_green, actual_pos_y_green
+    global actual_pos_x_red, actual_pos_y_red
     invisible_tank(color)
     x = 0
     y = 0
@@ -127,10 +145,14 @@ def move_tank(color, sprite):
         pos_green_x += x
         pos_green_y += y
         create_tank(pos_green_x, pos_green_y, color, sprite)
+        actual_pos_x_green = pos_green_x
+        actual_pos_y_green = pos_green_y
     elif color == "red":
         pos_red_x += x
         pos_red_y += y
         create_tank(pos_red_x, pos_red_y, color, sprite)
+        actual_pos_x_red = pos_red_x
+        actual_pos_y_red = pos_red_y
 
 
 # função que muda os sprites para dar movimento de rotação
@@ -186,7 +208,8 @@ def rotate_right_green():
 def move_bullet_green():
     # O tanque nao consegue atirar se pause for True
     if pause is False:
-        create_bullet(pos_green_x, pos_green_y, "green", sprite_tank[ind_green])
+        create_bullet(pos_green_x, pos_green_y,
+                      "green", sprite_tank[ind_green])
         move_bullet("green", sprite_tank[ind_green])
 
 
@@ -331,13 +354,6 @@ for i in range(alturaM):
     x = posx_parede
     y -= 21
 
-# posição inicial do tanque verde
-pos_green_x = -310
-pos_green_y = -15
-
-# posição inicial do tanque vermelho
-pos_red_x = 260
-pos_red_y = -15
 
 # indice do sprite inicial do tanque verde
 ind_green = 0
@@ -377,21 +393,10 @@ objects.create_score(posx_score_red, posy_score_red,
 
 score_red = 0  # pontuacao do tanque vermelho
 score_green = 0  # pontuacao do tanque verde
+hit = False
 
 while True:
 
-    # Se o tanque vermelho atingir o tanque verde:
-        # objects.change_score(posx_score_red, posy_score_red, "red",
-        #                      score_red)
-        # score_red += 1
-
-    # Se o tanque verde atingir o tanque vermelho:
-        # objects.change_score(posx_score_green, posy_score_green, "green",
-        #                      score_green)
-        # score_green += 1
-
-    # Se score_red == 5 or score_green == 5:
-        # fim de jogo (sair do while)
     screen.update()
 
     # colisão paredes (ainda tá meio cagado, mas não toca não que eu
@@ -401,12 +406,39 @@ while True:
 
     # As balas tem que ficar paradas se pause for True
     if pause is False:
-    # aqui faço a movimentação de todas as balas
+        # aqui faço a movimentação de todas as balas
         for i in range(len(bullets_list)):
             bullets_list[i].sety(bullets_list[i].ycor() + bullets_list[i].dy)
             bullets_list[i].setx(bullets_list[i].xcor() + bullets_list[i].dx)
 
-        
+            # Verifica se o tanque vermelho foi atingido
+            hit = physics.collision_bullet_tank(actual_pos_x_red,
+                                                actual_pos_y_red,
+                                                bullets_list[i].xcor(),
+                                                bullets_list[i].ycor())
+            if hit is True:
+                # so funcionou direito mandando as balas pra longe apos o hit
+                bullets_list[i].setx(400)
+                bullets_list[i].sety(500)
+                objects.change_score(posx_score_green, posy_score_green,
+                                     "green", score_green)
+                score_green += 1
+                hit = False
+
+            # Verifica se o tanque verde foi atingido
+            hit = physics.collision_bullet_tank(actual_pos_x_green,
+                                                actual_pos_y_green,
+                                                bullets_list[i].xcor(),
+                                                bullets_list[i].ycor())
+            if hit is True:
+                # so funcionou direito mandando as balas pra longe apos o hit
+                bullets_list[i].setx(400)
+                bullets_list[i].sety(500)
+                objects.change_score(posx_score_red, posy_score_red,
+                                     "red", score_red)
+                score_red += 1
+                hit = False
+
             # Colisão com a parede superior
             if(bullets_list[i].ycor() > 210):
                 bullets_list[i].hideturtle()
