@@ -145,7 +145,7 @@ def rotate_right(color):
     if color == "red":
         ind_red -= 22.5
         if ind_red == -22.5:
-            ind_red = 315
+            ind_red = 337.5
         create_tank(pos_red_x, pos_red_y, color, sprite_tank[ind_red])
 
 
