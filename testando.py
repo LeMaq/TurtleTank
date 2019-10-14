@@ -7,16 +7,6 @@ import time
 import os
 
 
-pause = False
-
-# variaveis da posicao para o score do tanque verde
-posx_score_green = -290
-posy_score_green = 280
-
-# variaveis da posicao para o score do tanque vermelho
-posx_score_red = 250
-posy_score_red = 280
-
 def game_pause():
     global pause
     if pause is False:
@@ -34,37 +24,50 @@ def create_hud(shape, color):
     return hud
 
 
-# um dicionario com o angulo em graus e o respectivo sprites
-sprite_tank = {0 :"Sprites_tanks/tank_0.txt",
-               22.5 :"Sprites_tanks/tank_22.5.txt",
-               45 :"Sprites_tanks/tank_45.txt",
-               67.5 :"Sprites_tanks/tank_67.5.txt",
-               90 :"Sprites_tanks/tank_90.txt",
-               112.5 :"Sprites_tanks/tank_112.5.txt",
-               135 :"Sprites_tanks/tank_135.txt",
-               157.5 :"Sprites_tanks/tank_157.5.txt",
-               180 :"Sprites_tanks/tank_180.txt",
-               202.5 :"Sprites_tanks/tank_202.5.txt",
-               225 :"Sprites_tanks/tank_225.txt",
-               247.5 :"Sprites_tanks/tank_247.5.txt",
-               270 :"Sprites_tanks/tank_270.txt",
-               292.5 :"Sprites_tanks/tank_292.5.txt",
-               315 :"Sprites_tanks/tank_315.txt",
-               337.5 :"Sprites_tanks/tank_337.5.txt"}
-
-# vetor com todos os mapas
-MapVector = ["Maps/mapa.txt", "Maps/mapa2.txt"]
-
-
 # Escolhendo o mapa dentro do vetor
 def random_map(x):
     y = random.randint(0, len(x)-1)
     return x[y]
 
 
-# lista onde sera armazenado cada pixel dos tanques
-tank_green = []
-tank_red = []
+# Essa função acha a ponta do canhão e cria a bala nessa posição
+def create_bullet(posx, posy, color, sprite):
+    x = posx
+    y = posy
+
+    tanque = open(sprite, "r")
+    for i in range(27):
+        largura = tanque.readline()
+        for j in range(len(largura)):
+            if largura[j] == '2':
+                bullet = create_hud("circle", "black")
+                bullet.turtlesize(0.2, 0.2)
+                bullet.goto(x, y)
+                bullet.dx = 0
+                bullet.dy = 0
+                bullet.hideturtle()
+                bullets_list.append(bullet)
+                break
+            x += 2.5
+        x = posx
+        y -= 5
+
+
+# Aqui eu acho a direção da ultima bala lançada
+def move_bullet(color, sprite):
+    # aqui eu defino o tamanho maximo da lista
+    if len(bullets_list) > 10:
+        bullets_list[0].hideturtle()
+        del bullets_list[0]
+    bullets_list[-1].showturtle()
+    x = 0
+    y = 0
+    for i in sprite_tank:
+        if sprite == sprite_tank[i]:
+            x = cos(radians(i))*20
+            y = sin(radians(i))*20
+    bullets_list[-1].dx = x
+    bullets_list[-1].dy = y
 
 
 # função que lê o txt/sprite e desenha
@@ -81,7 +84,7 @@ def create_tank(posx, posy, color, sprite):
         largura = tanque.readline()
         line = []
         for j in range(len(largura)):
-            if largura[j] == '1':
+            if largura[j] == '1' or largura[j] == '2':
                 pixel_tanque = create_hud("square", color)
                 pixel_tanque.turtlesize(0.2, 0.2)
                 pixel_tanque.goto(x, y)
@@ -161,50 +164,6 @@ def rotate_left(color):
         create_tank(pos_red_x, pos_red_y, color, sprite_tank[ind_red])
 
 
-# Criando a tela.
-screen = turtle.Screen()
-screen.title(" Atari Combat ")
-screen.bgcolor("orange")
-screen.setup(720, 585)
-screen.tracer(0)
-
-# dimensões da arena ( L -> 68, A -> 27)
-# desenhando as paredes na tela
-chosen_map = random_map(MapVector)
-mapa = open(chosen_map, "r")
-alturaM = len(mapa.readlines())
-
-posx_parede = -348
-posy_parede = 272
-
-x = posx_parede
-y = posy_parede
-mapa = open(chosen_map, "r")
-for i in range(alturaM):
-    larguraM = mapa.readline()
-    for j in range(len(larguraM)):
-        if larguraM[j] == '1':
-            pixel = create_hud("square", "yellow")
-            pixel.turtlesize(1, 1)
-            pixel.goto(x, y)
-        x += 10.5
-    x = posx_parede
-    y -= 21
-
-# posição inicial do tanque verde
-pos_green_x = -310
-pos_green_y = -15
-# posição inicial do tanque vermelho
-pos_red_x = 260
-pos_red_y = -15
-# indice do sprite inicial do tanque verde
-ind_green = 0
-# indice do sprite inicial do tanque vermelho
-ind_red = 180
-# criando o tanque verde
-create_tank(pos_green_x, pos_green_y, "green", sprite_tank[ind_green])
-
-
 # Movimentos do tanque verde
 def forward_green():
     # O tanque verde fica parado enquanto pause for True
@@ -224,8 +183,9 @@ def rotate_right_green():
         rotate_right("green")
 
 
-# criando o tanque vermelho
-create_tank(pos_red_x, pos_red_y, "red", sprite_tank[ind_red])
+def move_bullet_green():
+    create_bullet(pos_green_x, pos_green_y, "green", sprite_tank[ind_green])
+    move_bullet("green", sprite_tank[ind_green])
 
 
 # Movimentos do tanque vermelho
@@ -247,27 +207,9 @@ def rotate_right_red():
         rotate_right("red")
 
 
-# contorles player verde
-screen.listen()
-screen.onkeypress(rotate_left_green, 'a')
-screen.onkeypress(forward_green, 'w')
-screen.onkeypress(rotate_right_green, 'd')
-
-# controles player vermelho
-screen.onkeypress(rotate_left_red, 'Left')
-screen.onkeypress(forward_red, 'Up')
-screen.onkeypress(rotate_right_red, 'Right')
-
-# pause
-screen.onkeypress(game_pause, 'p')
-
-# cria o score inicial para o tanque verde
-objects.create_score(posx_score_green, posy_score_green,
-                     "green", "Scores/0.txt")
-
-# cria o score inicial para o tanque vermelho
-objects.create_score(posx_score_red, posy_score_red,
-                     "red", "Scores/0.txt")
+def move_bullet_red():
+    create_bullet(pos_red_x, pos_red_y, "red", sprite_tank[ind_red])
+    move_bullet("red", sprite_tank[ind_red])
 
 
 def wall_green(x, y, sprite):
@@ -317,23 +259,159 @@ def wall_collide(color):
         wall_red(pos_red_x, pos_red_y)
 
 
+# Criando a tela.
+screen = turtle.Screen()
+screen.title(" Atari Combat ")
+screen.bgcolor("orange")
+screen.setup(720, 585)
+screen.tracer(0)
+
+pause = False
+
+# variaveis da posicao para o score do tanque verde
+posx_score_green = -290
+posy_score_green = 280
+
+# variaveis da posicao para o score do tanque vermelho
+posx_score_red = 250
+posy_score_red = 280
+
+# um dicionario com o angulo em graus e o respectivo sprite
+sprite_tank = {0: "Sprites_tanks/tank_0.txt",
+               22.5: "Sprites_tanks/tank_22.5.txt",
+               45: "Sprites_tanks/tank_45.txt",
+               67.5: "Sprites_tanks/tank_67.5.txt",
+               90: "Sprites_tanks/tank_90.txt",
+               112.5: "Sprites_tanks/tank_112.5.txt",
+               135: "Sprites_tanks/tank_135.txt",
+               157.5: "Sprites_tanks/tank_157.5.txt",
+               180: "Sprites_tanks/tank_180.txt",
+               202.5: "Sprites_tanks/tank_202.5.txt",
+               225: "Sprites_tanks/tank_225.txt",
+               247.5: "Sprites_tanks/tank_247.5.txt",
+               270: "Sprites_tanks/tank_270.txt",
+               292.5: "Sprites_tanks/tank_292.5.txt",
+               315: "Sprites_tanks/tank_315.txt",
+               337.5: "Sprites_tanks/tank_337.5.txt"}
+
+# lista onde sera armazenado cada pixel dos tanques
+tank_green = []
+tank_red = []
+
+# Lista de balas na tela "qtd máxima 10!"
+bullets_list = []
+
+# vetor com todos os mapas
+MapVector = ["Maps/mapa.txt", "Maps/mapa2.txt"]
+
+# dimensões da arena ( L -> 68, A -> 27)
+# desenhando as paredes na tela
+chosen_map = random_map(MapVector)
+mapa = open(chosen_map, "r")
+alturaM = len(mapa.readlines())
+
+posx_parede = -348
+posy_parede = 272
+
+x = posx_parede
+y = posy_parede
+mapa = open(chosen_map, "r")
+for i in range(alturaM):
+    larguraM = mapa.readline()
+    for j in range(len(larguraM)):
+        if larguraM[j] == '1':
+            pixel = create_hud("square", "yellow")
+            pixel.turtlesize(1, 1)
+            pixel.goto(x, y)
+        x += 10.5
+    x = posx_parede
+    y -= 21
+
+# posição inicial do tanque verde
+pos_green_x = -310
+pos_green_y = -15
+
+# posição inicial do tanque vermelho
+pos_red_x = 260
+pos_red_y = -15
+
+# indice do sprite inicial do tanque verde
+ind_green = 0
+
+# indice do sprite inicial do tanque vermelho
+ind_red = 180
+
+# criando o tanque verde
+create_tank(pos_green_x, pos_green_y, "green", sprite_tank[ind_green])
+
+# criando o tanque vermelho
+create_tank(pos_red_x, pos_red_y, "red", sprite_tank[ind_red])
+
+# contorles player verde
+screen.listen()
+screen.onkeypress(rotate_left_green, 'a')
+screen.onkeypress(forward_green, 'w')
+screen.onkeypress(rotate_right_green, 'd')
+screen.onkeypress(move_bullet_green, 's')
+
+# controles player vermelho
+screen.onkeypress(rotate_left_red, 'Left')
+screen.onkeypress(forward_red, 'Up')
+screen.onkeypress(rotate_right_red, 'Right')
+screen.onkeypress(move_bullet_red, 'Down')
+
+# pause
+screen.onkeypress(game_pause, 'p')
+
+# cria o score inicial para o tanque verde
+objects.create_score(posx_score_green, posy_score_green,
+                     "green", "Scores/0.txt")
+
+# cria o score inicial para o tanque vermelho
+objects.create_score(posx_score_red, posy_score_red,
+                     "red", "Scores/0.txt")
+
 score_red = 0  # pontuacao do tanque vermelho
 score_green = 0  # pontuacao do tanque verde
 
 while True:
 
     # Se o tanque vermelho atingir o tanque verde:
-        # objects.change_score(posx_score_red, posy_score_red, "red", score_red)
+        # objects.change_score(posx_score_red, posy_score_red, "red",
+        #                      score_red)
         # score_red += 1
 
     # Se o tanque verde atingir o tanque vermelho:
-        # objects.change_score(posx_score_green, posy_score_green, "green", score_green)
+        # objects.change_score(posx_score_green, posy_score_green, "green",
+        #                      score_green)
         # score_green += 1
 
     # Se score_red == 5 or score_green == 5:
         # fim de jogo (sair do while)
     screen.update()
 
-    # colisão paredes (ainda tá meio cagado, mas não toca não que eu vou ajeitar)
+    # colisão paredes (ainda tá meio cagado, mas não toca não que eu
+    #                  vou ajeitar)
     wall_collide("green")
     wall_collide("red")
+
+    # aqui faço a movimentação de todas as balas
+    for i in range(len(bullets_list)):
+        bullets_list[i].sety(bullets_list[i].ycor() + bullets_list[i].dy)
+        bullets_list[i].setx(bullets_list[i].xcor() + bullets_list[i].dx)
+
+        # Colisão com a parede superior
+        if(bullets_list[i].ycor() > 290):
+            bullets_list[i].hideturtle()
+
+        # Colisão com a parede inferior
+        if(bullets_list[i].ycor() < -290):
+            bullets_list[i].hideturtle()
+
+        # Colisão com a parede direita
+        if (bullets_list[i].xcor() > 350):
+            bullets_list[i].hideturtle()
+
+        # Colisão com a parede esquerda
+        if(bullets_list[i].xcor() < -350):
+            bullets_list[i].hideturtle()
