@@ -1,4 +1,4 @@
-from Game_modules import objects, physics
+from Game_modules import objects, physics, menus
 from math import radians, sin, cos
 import random
 import sys
@@ -52,7 +52,7 @@ def create_bullet(posx, posy, color, sprite):
     y = posy
 
     tanque = open(sprite, "r")
-    for i in range(27):
+    for _i in range(27):
         largura = tanque.readline()
         for j in range(len(largura)):
             if largura[j] == '2':
@@ -399,9 +399,10 @@ objects.create_score(posx_score_red, posy_score_red,
 
 score_red = 0  # pontuacao do tanque vermelho
 score_green = 0  # pontuacao do tanque verde
-hit = False
+hit = False  # variável que informa quando um tanque é atingido
+end = False  # variável pra encerrar o jogo
 
-while True:
+while end is False:
 
     screen.update()
 
@@ -428,8 +429,13 @@ while True:
                 bullets_list[i].sety(500)
                 objects.change_score(posx_score_green, posy_score_green,
                                      "green", score_green)
-                score_green += 1
-                hit = False
+
+                # evita o "empate"
+                if score_red < 5:
+                    # faz o score mudar neste exato momento
+                    screen.update()
+                    score_green += 1
+                    hit = False
 
             # Verifica se o tanque verde foi atingido
             hit = physics.collision_bullet_tank(actual_pos_x_green,
@@ -442,8 +448,14 @@ while True:
                 bullets_list[i].sety(500)
                 objects.change_score(posx_score_red, posy_score_red,
                                      "red", score_red)
-                score_red += 1
-                hit = False
+
+                # evita o "empate"
+                if score_green < 5:
+                    # faz o score mudar neste exato momento
+                    screen.update()
+
+                    score_red += 1
+                    hit = False
 
             # Colisão com a parede superior
             if(bullets_list[i].ycor() > 210):
@@ -460,3 +472,12 @@ while True:
             # Colisão com a parede esquerda
             if(bullets_list[i].xcor() < -345):
                 bullets_list[i].hideturtle()
+
+        if score_green == 5:
+            menus.winner_message("green")
+            time.sleep(3)
+            end = True
+        elif score_red == 5:
+            menus.winner_message("red")
+            time.sleep(3)
+            end = True
