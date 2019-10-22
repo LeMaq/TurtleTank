@@ -6,6 +6,9 @@ import turtle
 import time
 import os
 
+# variaveis que armazenam o angulo do tanke nos sprites
+ind_green = 0
+ind_red = 0
 
 # posição inicial do tanque verde
 pos_green_x = -310
@@ -39,12 +42,6 @@ def create_hud(shape, color):
     hud.color(color)
     hud.penup()
     return hud
-
-
-# Escolhendo o mapa dentro do vetor
-def random_map(x):
-    y = random.randint(0, len(x)-1)
-    return x[y]
 
 
 # Essa função acha a ponta do canhão e cria a bala nessa posição
@@ -292,18 +289,14 @@ tank_red = []
 # Lista de balas na tela "qtd máxima 10!"
 bullets_list = []
 
-# vetor com todos os mapas
-# MapVector = ["Maps/mapa.txt", "Maps/mapa2.txt"]
-# por enquanto so o mapa 2 (mapa1) tem fisica
-#MapVector = ["Maps/mapa1.txt"]
-#chosen_map = random_map(MapVector)
-# dimensões da arena ( L -> 68, A -> 27)
-# desenhando as paredes na tela
 
+# por enquanto so o mapa 2 (mapa1) tem fisica
 # chamando mapa1 pelo terminal
 mapa = open("Maps/" + sys.argv[1], "r")
 alturaM = len(mapa.readlines())
 
+# dimensões da arena ( L -> 68, A -> 27)
+# desenhando as paredes na tela
 posx_parede = -348
 posy_parede = 272
 

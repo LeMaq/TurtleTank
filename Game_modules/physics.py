@@ -35,8 +35,8 @@ def cannon_position(posx, posy, color, sprite):
 # o tanque so vai mover pra frente se for True
 def can_move_forward(tank_pos_x, tank_pos_y, color, sprite):
     x_cannon, y_cannon = cannon_position(tank_pos_x, tank_pos_y, color, sprite)
-    print(x_cannon, y_cannon)
-    # Obstáculos do mapa 2
+
+    # Obstáculos do mapa 2 (mapa1)
 
     # obstáculo 1
     if ((x_cannon >= -285.61 and x_cannon <= -200.4 and
@@ -78,16 +78,16 @@ def can_move_forward(tank_pos_x, tank_pos_y, color, sprite):
 
     # parede esquerda externa
     if (x_cannon <= -321.72):
-        return False 
+        return False
     # parede direita externa
     if (x_cannon >= 319.14):
-        return False 
+        return False
     # parede superior externa
     if (y_cannon >= 185):
-        return False 
+        return False
     # parede inferior externa
     if (y_cannon <= -250):
-        return False 
+        return False
 
     return True
 

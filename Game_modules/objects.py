@@ -69,7 +69,3 @@ def change_score(posx, posy, color, actual_score):
         create_score(posx, posy, color, 'Scores/4.txt')
     else:
         create_score(posx, posy, color, 'Scores/5.txt')
-
-
-
-
