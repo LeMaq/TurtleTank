@@ -1,4 +1,5 @@
 """ Modulo com as funcoes da fisica do jogo, exemplo: colisoes """
+from random import randint
 import turtle
 
 
@@ -75,3 +76,10 @@ def can_move_forward(tank_pos_x, tank_pos_y, color, sprite):
         return False
 
     return True
+
+
+def tank_spawn():
+    spawn_points = [[-150, 90], [-150, -90], [150, 90], [150, -90]]
+    selected = randint(0, len(spawn_points) - 1)
+    point = spawn_points[selected]
+    return point[0], point[1]

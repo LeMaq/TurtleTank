@@ -6,6 +6,7 @@ import turtle
 import time
 import os
 
+
 # posição inicial do tanque verde
 pos_green_x = -310
 pos_green_y = -15
@@ -142,17 +143,13 @@ def move_tank(color, sprite):
             x = cos(radians(i))*10
             y = sin(radians(i))*10
     if color == "green":
-        pos_green_x += x
-        pos_green_y += y
-        create_tank(pos_green_x, pos_green_y, color, sprite)
-        actual_pos_x_green = pos_green_x
-        actual_pos_y_green = pos_green_y
+        actual_pos_x_green += x
+        actual_pos_y_green += y
+        create_tank(actual_pos_x_green, actual_pos_y_green, color, sprite)
     elif color == "red":
-        pos_red_x += x
-        pos_red_y += y
-        create_tank(pos_red_x, pos_red_y, color, sprite)
-        actual_pos_x_red = pos_red_x
-        actual_pos_y_red = pos_red_y
+        actual_pos_x_red += x
+        actual_pos_y_red += y
+        create_tank(actual_pos_x_red, actual_pos_y_red, color, sprite)
 
 
 # função que muda os sprites para dar movimento de rotação
@@ -163,12 +160,14 @@ def rotate_right(color):
         ind_green -= 22.5
         if ind_green == -22.5:
             ind_green = 337.5
-        create_tank(pos_green_x, pos_green_y, color, sprite_tank[ind_green])
+        create_tank(actual_pos_x_green, actual_pos_y_green, color,
+                    sprite_tank[ind_green])
     if color == "red":
         ind_red -= 22.5
         if ind_red == -22.5:
             ind_red = 337.5
-        create_tank(pos_red_x, pos_red_y, color, sprite_tank[ind_red])
+        create_tank(actual_pos_x_red, actual_pos_y_red, color,
+                    sprite_tank[ind_red])
 
 
 def rotate_left(color):
@@ -178,12 +177,14 @@ def rotate_left(color):
         ind_green += 22.5
         if ind_green == 360:
             ind_green = 0
-        create_tank(pos_green_x, pos_green_y, color, sprite_tank[ind_green])
+        create_tank(actual_pos_x_green, actual_pos_y_green, color,
+                    sprite_tank[ind_green])
     if color == "red":
         ind_red += 22.5
         if ind_red == 360:
             ind_red = 0
-        create_tank(pos_red_x, pos_red_y, color, sprite_tank[ind_red])
+        create_tank(actual_pos_x_red, actual_pos_y_red, color,
+                    sprite_tank[ind_red])
 
 
 # Movimentos do tanque verde
@@ -213,7 +214,7 @@ def rotate_right_green():
 def move_bullet_green():
     # O tanque nao consegue atirar se pause for True
     if pause is False:
-        create_bullet(pos_green_x, pos_green_y,
+        create_bullet(actual_pos_x_green, actual_pos_y_green,
                       "green", sprite_tank[ind_green])
         move_bullet("green", sprite_tank[ind_green])
 
@@ -244,7 +245,8 @@ def rotate_right_red():
 def move_bullet_red():
     # O tanque nao consegue atirar se pause for True
     if pause is False:
-        create_bullet(pos_red_x, pos_red_y, "red", sprite_tank[ind_red])
+        create_bullet(actual_pos_x_red, actual_pos_y_red,
+                      "red", sprite_tank[ind_red])
         move_bullet("red", sprite_tank[ind_red])
 
 
@@ -442,6 +444,12 @@ while end is False:
 
                 # evita o "empate"
                 if score_red < 5:
+                    spawn_x, spawn_y = physics.tank_spawn()
+                    invisible_tank("red")
+                    create_tank(spawn_x, spawn_y, "red",
+                                sprite_tank[ind_red])
+                    actual_pos_x_red = spawn_x
+                    actual_pos_y_red = spawn_y
                     # faz o score mudar neste exato momento
                     screen.update()
                     score_green += 1
@@ -461,6 +469,12 @@ while end is False:
 
                 # evita o "empate"
                 if score_green < 5:
+                    spawn_x, spawn_y = physics.tank_spawn()
+                    invisible_tank("green")
+                    create_tank(spawn_x, spawn_y, "green",
+                                sprite_tank[ind_green])
+                    actual_pos_x_green = spawn_x
+                    actual_pos_y_green = spawn_y
                     # faz o score mudar neste exato momento
                     screen.update()
 
