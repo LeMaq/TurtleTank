@@ -250,60 +250,6 @@ def move_bullet_red():
         move_bullet("red", sprite_tank[ind_red])
 
 
-def wall_green(x, y, sprite):
-    if x - 20 <= -360:
-        x = -340
-        invisible_tank("green")
-        create_tank(-340, y, "green", sprite_tank[ind_green])
-    elif x + 20 >= 332:
-        x = 302
-        invisible_tank("green")
-        create_tank(302, y, "green", sprite_tank[ind_green])
-
-    elif y - 20 <= -232:
-        y = -212
-        invisible_tank("green")
-        create_tank(x, y, "green", sprite_tank[ind_green])
-    elif y + 20 >= 222:
-        y = 202
-        invisible_tank("green")
-        create_tank(x, y, "green", sprite_tank[ind_green])
-
-    else:
-        screen.onkeypress(forward_green, 'w')
-
-
-def wall_red(x, y):
-    if x - 20 <= -360:
-        x = -340
-        invisible_tank("red")
-        create_tank(x, y, "red", sprite_tank[ind_red])
-    elif x + 20 >= 332:
-        x = 302
-        invisible_tank("red")
-        create_tank(x, y, "red", sprite_tank[ind_red])
-
-    elif y - 20 <= -232:
-        y = -212
-        invisible_tank("red")
-        create_tank(x, y, "red", sprite_tank[ind_red])
-    elif y + 20 >= 222:
-        y = 202
-        invisible_tank("red")
-        create_tank(x, y, "red", sprite_tank[ind_red])
-
-    else:
-        screen.onkeypress(forward_red, 'Up')
-
-
-def wall_collide(color):
-    if color == "green":
-        wall_green(actual_pos_x_green, actual_pos_y_green,
-                   sprite_tank[ind_green])
-    elif color == "red":
-        wall_red(actual_pos_x_red, actual_pos_y_red)
-
-
 # Criando a tela.
 screen = turtle.Screen()
 screen.title(" Atari Combat ")
@@ -348,6 +294,7 @@ bullets_list = []
 
 # vetor com todos os mapas
 # MapVector = ["Maps/mapa.txt", "Maps/mapa2.txt"]
+# por enquanto so o mapa 2 tem fisica
 MapVector = ["Maps/mapa2.txt"]
 
 # dimensões da arena ( L -> 68, A -> 27)
@@ -389,13 +336,13 @@ create_tank(pos_red_x, pos_red_y, "red", sprite_tank[ind_red])
 # contorles player verde
 screen.listen()
 screen.onkeypress(rotate_left_green, 'a')
-# screen.onkeypress(forward_green, 'w')
+screen.onkeypress(forward_green, 'w')
 screen.onkeypress(rotate_right_green, 'd')
 screen.onkeypress(move_bullet_green, 's')
 
 # controles player vermelho
 screen.onkeypress(rotate_left_red, 'Left')
-# screen.onkeypress(forward_red, 'Up')
+screen.onkeypress(forward_red, 'Up')
 screen.onkeypress(rotate_right_red, 'Right')
 screen.onkeypress(move_bullet_red, 'Down')
 
@@ -418,11 +365,6 @@ end = False  # variável pra encerrar o jogo
 while end is False:
 
     screen.update()
-
-    # colisão paredes (ainda tá meio cagado, mas não toca não que eu
-    #                  vou ajeitar)
-    wall_collide("green")
-    wall_collide("red")
 
     # As balas tem que ficar paradas se pause for True
     if pause is False:
