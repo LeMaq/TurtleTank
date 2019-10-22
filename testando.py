@@ -139,8 +139,8 @@ def move_tank(color, sprite):
     y = 0
     for i in sprite_tank:
         if sprite == sprite_tank[i]:
-            x = cos(radians(i))*20
-            y = sin(radians(i))*20
+            x = cos(radians(i))*10
+            y = sin(radians(i))*10
     if color == "green":
         pos_green_x += x
         pos_green_y += y
@@ -190,7 +190,12 @@ def rotate_left(color):
 def forward_green():
     # O tanque verde fica parado enquanto pause for True
     if pause is False:
-        move_tank("green", sprite_tank[ind_green])
+        # O tanque verde só pode se mover pra frente
+        # se não tiver um muro na frente
+        if physics.can_move_forward(actual_pos_x_green, actual_pos_y_green,
+                                    "green", sprite_tank[ind_green]) is True:
+
+            move_tank("green", sprite_tank[ind_green])
 
 
 def rotate_left_green():
@@ -217,7 +222,11 @@ def move_bullet_green():
 def forward_red():
     # O tanque vermelho fica parado enquanto pause for True
     if pause is False:
-        move_tank("red", sprite_tank[ind_red])
+        # O tanque red só pode se mover pra frente
+        # se não tiver um muro na frente
+        if physics.can_move_forward(actual_pos_x_red, actual_pos_y_red,
+                                    "red", sprite_tank[ind_red]) is True:
+            move_tank("red", sprite_tank[ind_red])
 
 
 def rotate_left_red():
@@ -335,7 +344,8 @@ tank_red = []
 bullets_list = []
 
 # vetor com todos os mapas
-MapVector = ["Maps/mapa.txt", "Maps/mapa2.txt"]
+# MapVector = ["Maps/mapa.txt", "Maps/mapa2.txt"]
+MapVector = ["Maps/mapa2.txt"]
 
 # dimensões da arena ( L -> 68, A -> 27)
 # desenhando as paredes na tela
