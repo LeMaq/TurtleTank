@@ -83,3 +83,45 @@ def tank_spawn():
     selected = randint(0, len(spawn_points) - 1)
     point = spawn_points[selected]
     return point[0], point[1]
+
+
+def bullet_hit_inside_wall(bullet_x, bullet_y):
+    # obstáculo 1
+    if ((bullet_x >= -275.61 and bullet_x <= -210.4 and
+         bullet_y <= 74.61 and bullet_y >= 54.34) or
+        (bullet_x >= -234.7 and bullet_x <= -210.4 and
+         bullet_y <= 74.61 and bullet_y >= -135.37) or
+        (bullet_x >= -275.61 and bullet_x <= -210.4 and
+         bullet_y <= -105.1 and bullet_y >= -137.37)):
+        return True
+
+    # obstáculo 2
+    if (bullet_x >= -129.24 and bullet_x <= -43.24 and
+            bullet_y <= -8.08 and bullet_y >= -55.05):
+        return True
+
+    # obstáculo 3
+    if (bullet_x >= 36.24 and bullet_x <= 124.24 and
+            bullet_y <= -8.08 and bullet_y >= -55.05):
+        return True
+
+    # obstáculo 4
+    if (bullet_x >= -24.88 and bullet_x <= 20.88 and
+            bullet_y <= 99.13 and bullet_y >= 5.20):
+        return True
+
+    # obstáculo 5
+    if (bullet_x >= -24.88 and bullet_x <= 20.88 and
+            bullet_y <= -72.05 and bullet_y >= -162.3):
+        return True
+
+    # obstáculo 6
+    if ((bullet_x >= 205.4 and bullet_x <= 273.61 and
+         bullet_y <= 74.61 and bullet_y >= 54.34) or
+        (bullet_x >= 205.4 and bullet_x <= 237.7 and
+         bullet_y <= 74.61 and bullet_y >= -135.37) or
+        (bullet_x >= 205.4 and bullet_x <= 273.61 and
+         bullet_y <= -115.1 and bullet_y >= -137.37)):
+        return True
+
+    return False

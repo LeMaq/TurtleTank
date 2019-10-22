@@ -298,9 +298,10 @@ def wall_red(x, y):
 
 def wall_collide(color):
     if color == "green":
-        wall_green(pos_green_x, pos_green_y, sprite_tank[ind_green])
+        wall_green(actual_pos_x_green, actual_pos_y_green,
+                   sprite_tank[ind_green])
     elif color == "red":
-        wall_red(pos_red_x, pos_red_y)
+        wall_red(actual_pos_x_red, actual_pos_y_red)
 
 
 # Criando a tela.
@@ -429,6 +430,13 @@ while end is False:
         for i in range(len(bullets_list)):
             bullets_list[i].sety(bullets_list[i].ycor() + bullets_list[i].dy)
             bullets_list[i].setx(bullets_list[i].xcor() + bullets_list[i].dx)
+
+            # Verifica se a bala atingiu uma parede interna
+            if physics.bullet_hit_inside_wall(bullets_list[i].xcor(),
+                                              bullets_list[i].ycor()):
+                # mando as balas pra longe apos o hit
+                bullets_list[i].setx(400)
+                bullets_list[i].sety(500)
 
             # Verifica se o tanque vermelho foi atingido
             hit = physics.collision_bullet_tank(actual_pos_x_red,
