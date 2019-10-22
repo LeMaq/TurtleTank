@@ -294,13 +294,14 @@ bullets_list = []
 
 # vetor com todos os mapas
 # MapVector = ["Maps/mapa.txt", "Maps/mapa2.txt"]
-# por enquanto so o mapa 2 tem fisica
-MapVector = ["Maps/mapa2.txt"]
-
+# por enquanto so o mapa 2 (mapa1) tem fisica
+#MapVector = ["Maps/mapa1.txt"]
+#chosen_map = random_map(MapVector)
 # dimensões da arena ( L -> 68, A -> 27)
 # desenhando as paredes na tela
-chosen_map = random_map(MapVector)
-mapa = open(chosen_map, "r")
+
+# chamando mapa1 pelo terminal
+mapa = open("Maps/" + sys.argv[1], "r")
 alturaM = len(mapa.readlines())
 
 posx_parede = -348
@@ -308,7 +309,7 @@ posy_parede = 272
 
 x = posx_parede
 y = posy_parede
-mapa = open(chosen_map, "r")
+mapa = open("Maps/" + sys.argv[1], "r")
 for i in range(alturaM):
     larguraM = mapa.readline()
     for j in range(len(larguraM)):
@@ -431,19 +432,19 @@ while end is False:
                     score_red += 1
                     hit = False
 
-            # Colisão com a parede superior
+            # Colisão balas com a parede superior
             if(bullets_list[i].ycor() > 210):
                 bullets_list[i].hideturtle()
 
-            # Colisão com a parede inferior
+            # Colisão balascom a parede inferior
             if(bullets_list[i].ycor() < -270):
                 bullets_list[i].hideturtle()
 
-            # Colisão com a parede direita
+            # Colisão balas com a parede direita
             if (bullets_list[i].xcor() > 340):
                 bullets_list[i].hideturtle()
 
-            # Colisão com a parede esquerda
+            # Colisão balas com a parede esquerda
             if(bullets_list[i].xcor() < -345):
                 bullets_list[i].hideturtle()
 
