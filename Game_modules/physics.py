@@ -36,7 +36,7 @@ def cannon_position(posx, posy, color, sprite):
 def can_move_forward(tank_pos_x, tank_pos_y, color, sprite):
     x_cannon, y_cannon = cannon_position(tank_pos_x, tank_pos_y, color, sprite)
 
-    # Obstáculos do mapa 2 (mapa1)
+    # Obstáculos do mapa1
 
     # obstáculo 1
     if ((x_cannon >= -285.61 and x_cannon <= -200.4 and
@@ -98,7 +98,7 @@ def tank_spawn():
     point = spawn_points[selected]
     return point[0], point[1]
 
-
+#Colisão entre a bala e as paredes internas do mapa
 def bullet_hit_inside_wall(bullet_x, bullet_y):
     # obstáculo 1
     if ((bullet_x >= -275.61 and bullet_x <= -210.4 and
