@@ -32,5 +32,5 @@ Pause: P
   - Clone the repository into your machine
   - Open the TurtleTank file
   - Open the terminal
-  - Digit python3 turtle_tank.py mapa1.txt in the command line
+  - Digit in the command line: python3 turtle_tank.py mapa1.txt
   - have fun!!!
